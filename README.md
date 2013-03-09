@@ -7,4 +7,4 @@ for massive checking sites for available (status 200).
 Project status
 --------------
 
-Developer version (this branch).
+Beta version (this branch).
