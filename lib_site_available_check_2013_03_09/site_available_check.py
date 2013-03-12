@@ -62,14 +62,14 @@ def site_available_check_thread(
             data.opener_req = request.Request(data.site_url)
             data.opener_timeout = 20.0
             data.opener_data_require = 1000
-            
-            if on_begin is not None:
-                on_begin(None, data)
         except Exception:
             if on_begin is not None:
                 on_begin(sys.exc_info(), data)
             
             continue
+        else:
+            if on_begin is not None:
+                on_begin(None, data)
         
         try:
             opener = request.build_opener()
@@ -85,12 +85,14 @@ def site_available_check_thread(
             
             if len(data.resp_data) < data.opener_data_require:
                 raise SiteAvCheckError('len(data.resp_data) less then data.opener_data_require')
-            
-            if on_result is not None:
-                on_result(None, data)
         except Exception:
             if on_result is not None:
                 on_result(sys.exc_info(), data)
+            
+            continue
+        else:
+            if on_result is not None:
+                on_result(None, data)
 
 def bulk_site_available_check(
         site_list,
