@@ -23,31 +23,31 @@ from . import read_list, site_available_check
 class UserError(Exception):
     pass
 
-def on_begin(error, ui_lock, data):
+def on_begin(err, ui_lock, data):
     with ui_lock:
-        if error is not None:
-            print('error (on_begin): {!r}: {}'.format(error[0], error[1]))
+        if err is not None:
+            print('error state (on_begin)')
             return
         
         print('[{!r}] begin: {!r}'.format(data.site_id, data.site_url))
 
-def on_result(error, ui_lock, out_heap, data):
+def on_result(err, ui_lock, out_heap, data):
     with ui_lock:
-        if error is not None:
+        if err is not None:
             print('[{!r}] error: {!r}: {!r}: {}'.format(
                     data.site_id, data.site_url,
-                    error[0], error[1]))
+                    err[0], err[1]))
             return
         
         heapq.heappush(out_heap, (data.site_id, data))
         
         print('[{!r}] pass: {!r}'.format(data.site_id, data.site_url))
 
-def on_done(error, ui_lock, out_heap, out_fd, done_event):
+def on_done(err, ui_lock, out_heap, out_fd, done_event):
     with ui_lock:
         try:
-            if error is not None:
-                print('error (on_done): {!r}: {}'.format(error[0], error[1]))
+            if err is not None:
+                print('error state (on_done)')
                 return
             
             print('writing...')
